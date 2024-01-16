@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User page</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>Введите данные</h1>
+    <form id="formUser" action="/user" method="post">
+        <p>
+          <label>Имя</label><br>
+          <input type="text" name="userName" />
+        </p>
+        <p>
+          <label>Возраст</label><br>
+          <input type="number" name="userAge" />
+        </p>
+        <input type="submit" value="Отправить" />
+    </form>
+    <div>
+      <p id="nameOutput"></p>
+      <p id="ageOutput"></p>
+    </div>
+    <script>
+      const form = document.getElementById('formUser')
+      const nameOutputElement = document.getElementById('nameOutput')
+      const ageOutputElement = document.getElementById('ageOutput')
+    
+      form.addEventListener("submit", async (event)=> {
+          event.preventDefault()
+          
+          const userName = form.userName.value
+          const userAge = form.userAge.value
+      
+          const data = await fetch("/user", { 
+            method: "POST", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({name: userName, age: userAge})
+          })
+          
+          const response = await data.json()
+          
+          ageOutputElement.append(response?.age)
+          nameOutputElement.append(response?.name)
+      })
+    </script>
+</body>
+</html>
